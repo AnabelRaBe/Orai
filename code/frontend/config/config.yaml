@@ -1,0 +1,43 @@
+credentials:
+  usernames:
+    mortega:
+      email: miguel.ortega@accenture.com
+      name: Miguel Ortega
+      password: $2b$12$Xdzk4wfkuGkNlw9RLa14oOyjDgNv1San5Ln6DYFg4CyGEaTN/Dgyq
+    lmambrilla:
+      email: laura.mambrilla@avanade.com
+      name: Laura Mambrilla
+      password: $2b$12$Xdzk4wfkuGkNlw9RLa14oOyjDgNv1San5Ln6DYFg4CyGEaTN/Dgyq
+    algonzalez:
+      email: alexander.gonzalez@avanade.com
+      name: Alexander Gonzalez
+      password: $2b$12$Xdzk4wfkuGkNlw9RLa14oOyjDgNv1San5Ln6DYFg4CyGEaTN/Dgyq
+    general:
+      email: general.user@santander.com
+      name: General User
+      password: $2b$12$4q6REH.SpxbG/6abjcK2F.J10gg0aZ9j7aTj5wqHRSS0vH5cmqF1G
+users:
+  mortega:
+    user_id: 7e74a326-1a4a-4f41-9b62-7c1793e85f48
+    name: Miguel Ortega
+    email: miguel.ortega@accenture.com
+    group: Orai_Admin
+  lmambrilla:
+    user_id: b21882d5-cfe7-4aec-a8f3-1fba86e3618c
+    name: Laura Mambrilla
+    email: laura.mambrilla@avanade.com
+    group: Orai_Advance
+  algonzalez:
+    user_id: 9b13486e-a74a-48bc-a764-6d12232f554c
+    name: Alexander Gonzalez
+    email: alexander.gonzalez@avanade.com
+    group: Orai_Metrics
+  general:
+    user_id: d1d13bfa-5d26-477a-8f94-116f9cd20917
+    name: General User
+    email: general.user@santander.com
+    group: Orai_User
+cookie:
+  expiry_days: 0
+  key: cookie
+  name: some_cookie_name

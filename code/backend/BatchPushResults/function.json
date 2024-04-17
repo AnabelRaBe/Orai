@@ -1,0 +1,12 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "msg",
+      "type": "eventHubTrigger",
+      "direction": "in",
+      "eventHubName": "avanade-eventhub-nspm",
+      "connection": "AzureEventHubStorage"
+    }
+  ]
+}
