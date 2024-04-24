@@ -1,0 +1,55 @@
+# Azure Search for storing the processed documents
+AZURE_SEARCH_SERVICE=https://innd1frcachportalcrit002.search.windows.net
+AZURE_SEARCH_INDEX= orai-global-index #avanade-index #test-index-5 # avanade-index
+AZURE_INGEST_INDEX= orai-global-index
+AZURE_SEARCH_KEY=3JXCvlOpqtoonngBLuEVsRmHWxBjwEoS2gUzi3IVrMAzSeBGHHRm
+
+# Azure OpenAI for generating the answer and computing the embedding of the documents
+AZURE_OPENAI_RESOURCE=innd1scdoaiportalcrit001
+AZURE_OPENAI_KEY=23892aa9ef9343ac82d75167b1902d6b
+AZURE_OPENAI_API_VERSION=2023-05-15
+AZURE_OPENAI_EMBEDDING_MODEL=text-embedding-ada-002
+
+# Backend for processing the documents and application logging in the app
+AzureWebJobsStorage=DefaultEndpointsProtocol=https;AccountName=innd1weustaportalcrit002;AccountKey=VllgERjUXXM2dFBqa2y9jDyKa1/Ui1PRFOT5YuzIZqCFfL3RotFawM163MBwnHFAKty9vdQqBpKq+ASt2NE8kg==;EndpointSuffix=core.windows.net
+AzureEventHubStorage=Endpoint=sb://innd1weuaehportalcrit001.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3i3NcbAACwszAlSBSbv4NmAB5vDerj60l+AEhE31UYs=
+BACKEND_URL= https://innd1weuafaportalcrit001.azurewebsites.net 
+#http://localhost:7071 #https://innd1weuafaportalcrit001.azurewebsites.net 
+ 
+APPINSIGHTS_CONNECTION_STRING=InstrumentationKey=07883902-8a14-4240-aade-db6bffa3ede4;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/
+EVENT_HUB_CONNECTION_STR=Endpoint=sb://innd1weuaehportalcrit001.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3i3NcbAACwszAlSBSbv4NmAB5vDerj60l+AEhE31UYs=
+EVENT_HUB_NAME=innd1weuaehportalcrit001
+ORCHESTRATION_STRATEGY=langchain
+
+# Azure Blob Storage for storing the original documents to be processed
+AZURE_BLOB_ACCOUNT_NAME=innd1weustaportalcrit002
+AZURE_BLOB_ACCOUNT_KEY=VllgERjUXXM2dFBqa2y9jDyKa1/Ui1PRFOT5YuzIZqCFfL3RotFawM163MBwnHFAKty9vdQqBpKq+ASt2NE8kg==
+
+AZURE_BLOB_GLOBAL_DOCUMENTS_CONTAINER_NAME= documents
+AZURE_BLOB_LOCAL_DOCUMENTS_CONTAINER_NAME=user-documents
+AZURE_BLOB_CONTAINER_FEEDBACK_NAME=feedback
+AZURE_BLOB_CONTAINER_CONVERSATIONS_NAME=conversations
+
+# Azure Form Recognizer for extracting the text from the documents
+AZURE_FORM_RECOGNIZER_ENDPOINT=https://innd1weufrmportalcrit001.cognitiveservices.azure.com/
+AZURE_FORM_RECOGNIZER_KEY=ceacdf2c88794cff92282bb888e6153f
+
+# Azure Configuration settings
+AZURE_TENANT_ID=35595a02-4d6d-44ac-99e1-f9ab4cd872db
+# AZURE_RESOURCE_GROUP=avanade-test
+# AZURE_SUBSCRIPTION_ID=24632422-1d5b-4834-9538-a10d73da99ba
+ORAI_ADMIN_USER_GROUP_ID=31dfc13a-20fa-4bdb-8549-09cb9e69c235
+ORAI_ADVANCE_USER_GROUP_ID=be907448-fc99-4871-af7b-9877635923fc 
+ORAI_METRICS_GROUP_ID=62ff4456-98f9-4ac4-9b22-72605abc4e4a
+ORAI_USER_GROUP_ID=3dba735c-de28-45e9-9d25-05b5e5b58541
+ORAI_ADMIN_USER_GROUP_NAME=Orai_Admin
+ORAI_ADVANCE_USER_GROUP_NAME=Orai_Advance
+ORAI_METRICS_GROUP_NAME=Orai_Metrics
+ORAI_USER_GROUP_NAME=Orai_User
+GROUP_NAME=Orai 
+
+# Azure AD for authentication
+CLIENT_ID=30248b04-ba83-47ec-a16b-8bb4ed8b1ebe
+AZURE_CLIENT_SECRET=XlY8Q~xsXqLP9Rn0F_v1.NDzrqt0TVwxZghjbcaf
+AUTHORITY=https://login.microsoftonline.com/35595a02-4d6d-44ac-99e1-f9ab4cd872db
+REDIRECT_URI=https://innd1weuapphqchatcrit001.azurewebsites.net/
