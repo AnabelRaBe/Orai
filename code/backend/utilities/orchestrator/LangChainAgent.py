@@ -13,8 +13,6 @@ from ..parser.OutputParserTool import OutputParserTool
 from ..tools.QuestionAnswerTool import QuestionAnswerTool
 from ..tools.SearchTool import SearchTool
 import logging, time
-from langchain_core.messages import SystemMessage, AIMessage, HumanMessage
-from langchain_postgres import PostgresChatMessageHistory
 import psycopg
 import uuid
 
@@ -45,12 +43,12 @@ class LangChainAgent(OrchestratorBase):
         answer = self.faq_question_answer_tool.answer_question(user_message, chat_history=[])
         return answer.to_json()
     
-    def orchestrate(self, user_message: str, chat_history: List[dict], config: dict, **kwargs: dict) -> dict:
+    def orchestrate(self, user_message: str, chat_history: List[dict], conversation_id: str, config: dict,  **kwargs: dict) -> dict:
         
         #self.global_question_answer_tool = QuestionAnswerTool(global_index_name=self.global_index_name,
         #                                                      user_index_name=self.user_index_name,
         #                                                      config=config)
-
+        
         self.faq_question_answer_tool = FAQTool(config=config)
 
         self.search_question_answer_tool = SearchTool(global_index_name=self.global_index_name,
@@ -98,28 +96,14 @@ class LangChainAgent(OrchestratorBase):
             input_variables=["input", "chat_history", "agent_scratchpad"],
         )
         
-        # memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-        # memory = ConversationBufferWindowMemory(memory_key="chat_history",
-        #                                         return_messages=True,
-        #                                         k=3)
-        # for message in chat_history:
-        #     memory.chat_memory.add_user_message(message[0])
-        #     memory.chat_memory.add_ai_message(message[1])
 
         conn_info = "postgresql://pfsadmin:d6t7M051Y-km@innd1weupfsportalcrit001.postgres.database.azure.com:5432/chat_history"
-        sync_connection = psycopg.connect(conn_info)
 
-        #################
-        #Se va a crear sólo una vez
-        table_name = "chat_history"
-        PostgresChatMessageHistory.create_tables(sync_connection, table_name)
-        ###################
-        session_id = str(uuid.uuid4())
+        session_id = conversation_id
 
         chat_history = PostgresChatMessageHistory(
-            table_name,
-            session_id,
-            sync_connection=sync_connection
+            connection_string = conn_info,
+            session_id = session_id,
         )
 
         memory = ConversationBufferWindowMemory(chat_memory=chat_history,
@@ -150,6 +134,6 @@ class LangChainAgent(OrchestratorBase):
             answer = post_prompt_tool.validate_answer(answer)
             self.log_tokens(prompt_tokens=answer.prompt_tokens, completion_tokens=answer.completion_tokens)                
 
-        messages = output_formatter.parse(question=answer.question, answer=answer.answer, source_documents=answer.source_documents)
+        messages = output_formatter.parse(question=answer.question, answer=answer.answer, source_documents=answer.source_documents)  
         return messages
     

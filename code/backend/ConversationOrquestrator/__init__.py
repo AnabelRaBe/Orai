@@ -3,6 +3,7 @@ import json
 import logging
 import azure.functions as func
 import requests
+import urllib.parse
 from dotenv import load_dotenv
 from ..utilities.helpers.OrchestratorHelper import Orchestrator
 from ..utilities.helpers.ConfigHelper import ConfigHelper
@@ -43,13 +44,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         messages = message_orchestrator.handle_message(user_message=user_message, language = language,chat_history=chat_history,
                                                        conversation_id=conversation_id, orchestrator=config.orchestrator,
                                                        global_index_name=os.getenv("AZURE_SEARCH_INDEX"), user_index_name=user_index_name, config=config)
-
+        
         chat_followup_questions_list = []
 
         for message in messages:
             if message["role"] == "assistant":
                 answer_without_followup, chat_followup_questions_list = message_orchestrator.extract_followupquestions(message["content"])
                 message["content"] = answer_without_followup
+
+
 
         response = {
             "id": "response.id",
@@ -65,6 +68,27 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         }
 
         answer_with_hyperlinks = hyperlinks.add_hyperlinks(response, answer_without_followup)
+
+        user_message = user_message.replace("'", "").replace('"', '')
+        answer_with_hyperlinks = answer_with_hyperlinks.replace("'", "").replace('"', '')
+        params={
+            "conversation_id": conversation_id,
+            "user_id": user_index_name.replace("-index", ""),
+            "message": [{
+                        "author": "human",
+                        "content": user_message,
+                        },
+                        {
+                        "author": "ai",
+                        "content": answer_with_hyperlinks,
+                        }],
+
+            "language": language
+            }
+
+        # Send the parameters to the PostgreSQL endpoint
+        save_chat_temp_url = urllib.parse.urljoin(os.getenv('BACKEND_URL', 'http://localhost:7071'), "/api/SaveConversation")
+        requests.post(save_chat_temp_url, json=params)
 
         for message in messages:
             if message["role"] == "assistant":

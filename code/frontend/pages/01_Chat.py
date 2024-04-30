@@ -175,7 +175,8 @@ def embeddings_generation(files_names: list, user_id: str, process_all: bool = F
 
 
 def handle_message(chat_history: dict,language: str, user_index_name: str) -> dict:
-    orquestrator_url = urllib.parse.urljoin(os.getenv('BACKEND_URL', 'http://localhost:7072'), "/api/ConversationOrquestrator")
+
+    orquestrator_url = urllib.parse.urljoin(os.getenv('BACKEND_URL', 'http://localhost:7071'), "/api/ConversationOrquestrator")
     
     params = {"chat_history": chat_history,
               "language":language,
@@ -297,8 +298,40 @@ def date_format(json_bytes: bytes) -> str:
     return date
 
 
+def save_historical(chat_history: dict,language: str, user_index_name: str, conversation_id: str, type_method: str) -> dict:
+    postgresql_url = urllib.parse.urljoin(os.getenv('BACKEND_URL', 'http://localhost:7072'), "/api/PostgreSQLConnection")
+
+    params = {"type_method": type_method,
+              "chat_history": chat_history,
+              "language":language,
+              "user_index_name": user_index_name,
+              "conversation_id": conversation_id}
+
+    # try:
+    #     response = requests.post(postgresql_url, json=params)
+    #     return json.loads(response.text)
+    # except Exception as e:
+    #     st.error(traceback.format_exc())
+
+def get_historical(chat_history: dict,language: str, user_index_name: str, conversation_id: str, type_method: str) -> dict:
+    postgresql_url = urllib.parse.urljoin(os.getenv('BACKEND_URL', 'http://localhost:7072'), "/api/PostgreSQLConnection")
+
+    params = {"type_method": type_method,
+              "chat_history": chat_history,
+              "language":language,
+              "user_index_name": user_index_name,
+              "conversation_id": conversation_id}
+
+    try:
+        response = requests.post(postgresql_url, json=params)
+        return json.loads(response.text)
+    except Exception as e:
+        st.error(traceback.format_exc())
+
+
 def clear_chat_data(generate_json: bool, language: str):
     if generate_json:
+        save_historical(st.session_state['chat_history_langchain']['messages'],language, user_index_name, st.session_state ['conversation_id'], "POST")
         generate_json_historical(language)
     st.session_state['collected_historical_conversation'] = False
     st.session_state['chat_history'] = []
@@ -529,7 +562,6 @@ def generate_json_feedback(feedback: dict, question: str, answer: str, citations
     blob_name = now.strftime("%Y-%m-%d_%H-%M-%S_feedback_" + conversation_id)
 
     prepare_blob(data_json, os.getenv("AZURE_BLOB_CONTAINER_FEEDBACK_NAME"), blob_name)
-
 
 def generate_json_historical(language: str):
     azure_blob_client = AzureBlobStorageClient(account_name = os.getenv("AZURE_BLOB_ACCOUNT_NAME"), account_key = os.getenv("AZURE_BLOB_ACCOUNT_KEY"), container_name = os.getenv("AZURE_BLOB_CONTAINER_CONVERSATIONS_NAME"))

@@ -1,0 +1,29 @@
+Function:
+	ConversationOrquestrator:
+		_init_.py
+
+	SaveConversation:
+
+	GetHistoricalConversation:
+
+	Extract_Topics:
+
+	DeleteConversation:
+
+	UpdateConversation:
+
+
+
+
+	utilities:
+		common:
+			GenerateTopicTool.py
+			PostgreSQL.py
+			ValidationRequest.py
+
+		orchestrator:
+			LangChainAgent.py
+			OrchestratorBase.py
+
+Notas:
+-Incluir en el archivo de configuraci¢n los par metros de conexi¢n a la base de datos
